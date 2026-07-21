@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>SEASON | RAIDEN</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      letter-spacing: 0.15em;
+      margin: 80px 0 60px;
+      text-shadow: 0 0 25px rgba(255,255,255,0.25);
+    }
+
+    .season {
+      margin: 100px auto;
+      max-width: 900px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1.2s ease;
+    }
+
+    .season.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .season img {
+      width: 380px;
+      max-width: 90%;
+      border-radius: 8px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.15);
+      margin-bottom: 20px;
+    }
+
+    .season h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .season p {
+      font-size: 18px;
+      line-height: 2;
+      opacity: 0.85;
+    }
+
+    .back {
+      margin: 100px 0 60px;
+    }
+
+    .back a {
+      color: #4ea3ff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: 0.3s;
+    }
+
+    .back a:hover {
+      color: #7fc2ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>SEASON</h1>
+
+<div class="season" id="spring">
+  <h2>SPRING</h2>
+  <img src="P_RAIDEN_EN.PNG" alt="円環雷神">
+  <p>
+    <strong>「雷神」</strong><br>
+    昔から風神雷神図で知られる雷神。怖い見た目だが、実は人々を守る神。背負った雷太鼓を叩けば雷鳴が世界に響く。
+  </p>
+</div>
+
+<div class="season" id="summer">
+  <h2>SUMMER</h2>
+  <img src="P_RAIDEN_KON.PNG" alt="棍棒雷神">
+  <p>
+    <strong>「地獄の鬼」</strong><br>
+    地獄とは罪を償う場所。その門番であり管理人でもある存在が「鬼」。棍棒を携え、荒々しい力を象徴する。
+  </p>
+</div>
+
+<div class="season" id="autumn">
+  <h2>AUTUMN</h2>
+  <img src="P_RAIDEN_MIC.PNG" alt="マイク雷神">
+  <p>
+    <strong>「唄う鬼」</strong><br>
+    地獄の鬼にHipHopのラップを掛け合わせた姿。恐怖の象徴が音楽によってポップなカルチャーへと変化する。
+  </p>
+</div>
+
+<div class="season" id="winter">
+  <h2>WINTER</h2>
+  <img src="P_RAIDEN_BASE.PNG" alt="素体雷神">
+  <p>
+    静寂の中に力を秘める。雷神の原型が眠る季節。
+  </p>
+</div>
+
+  <div class="back">
+    <a href="index.html">← BACK TO HOME</a>
+  </div>
+
+  <script>
+    const seasons = document.querySelectorAll('.season');
+    window.addEventListener('scroll', () => {
+      seasons.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          sec.classList.add('visible');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

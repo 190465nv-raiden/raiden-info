@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RAIDEN</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- フォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== ベース ===== */
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* 背景雷（うっすら光る） */
+    @keyframes lightningFlash {
+      0%, 95% { opacity: 0; }
+      96% { opacity: 0.4; }
+      97% { opacity: 0.8; }
+      98% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+
+    .lightning-bg {
+      position: fixed;
+      inset: 0;
+      background: url('lightning.jpg') center/cover no-repeat;
+      opacity: 0;
+      animation: lightningFlash 6s infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ===== HERO ===== */
+    .hero-wrap {
+      position: relative;
+      padding: 120px 20px 80px;
+      background: url('ink-texture.png') center/cover no-repeat;
+      background-color: rgba(0,0,0,0.65);
+      overflow: hidden;
+    }
+
+    .hero-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 72px;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      margin-bottom: 25px;
+      opacity: 0;
+      animation: heroFadeIn 2s ease forwards;
+    }
+
+    @keyframes heroFadeIn {
+      to { opacity: 1; }
+    }
+
+    .hero-lightning-line {
+      position: absolute;
+      top: 50%;
+      left: -220px;
+      width: 220px;
+      height: 4px;
+      background: linear-gradient(90deg, #ffd900, #fff);
+      box-shadow: 0 0 12px #ffd900;
+      transform: translateY(-50%);
+      opacity: 0;
+      animation: lightningMove 1.4s ease-out forwards;
+    }
+
+    @keyframes lightningMove {
+      0%   { left: -220px; opacity: 0; }
+      20%  { opacity: 1; }
+      100% { left: 120%; opacity: 0; }
+    }
+
+    .hero-illust {
+      width: 340px;
+      max-width: 90%;
+      margin: 40px auto 20px;
+      display: block;
+      filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
+      animation: floatIllust 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIllust {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .hero-catch {
+      font-size: 20px;
+      line-height: 1.9;
+      margin-bottom: 50px;
+      opacity: 0;
+      animation: catchFadeIn 3s ease forwards;
+    }
+
+    @keyframes catchFadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ===== HERO NAV（これだけ残す） ===== */
+    .hero-nav a {
+      margin: 0 25px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      transition: 0.3s;
+      padding-bottom: 4px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .hero-nav a:hover {
+      color: #4ea3ff;
+      border-bottom: 1px solid #4ea3ff;
+    }
+
+    /* ===== ハンバーガーメニュー ===== */
+    .raiden-menu-btn {
+      position: fixed;
+      top: 18px;
+      left: 20px;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .raiden-menu-btn span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: #fff;
+      margin-bottom: 5px;
+      transition: 0.3s;
+    }
+
+    .raiden-menu-btn.active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .raiden-menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .raiden-menu-btn.active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .raiden-menu {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(4px);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .raiden-menu.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-inner {
+      max-width: 520px;
+      margin: 80px auto;
+      padding: 30px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      background: rgba(0,0,0,0.7) url('ink-texture.png') center/cover;
+    }
+
+    .menu-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      margin-bottom: 20px;
+    }
+
+    .raiden-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .raiden-menu li {
+      margin: 10px 0;
+    }
+
+    .raiden-menu a {
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      font-size: 15px;
+      opacity: 0.8;
+      transition: 0.3s;
+    }
+
+    .raiden-menu a:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+
+    /* ===== お知らせバー ===== */
+    #raiden-notice {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 520px;
+      background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 18px 0 14px;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.12em;
+      color: #fff;
+      opacity: 0;
+      z-index: 950;
+      border-radius: 6px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.25);
+    }
+
+    .notice-close {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: 0.3s;
+    }
+
+    .notice-close:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+
+    #raiden-notice p {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    #raiden-notice .sub {
+      font-size: 13px;
+      opacity: 0.85;
+      letter-spacing: 0.08em;
+      color: #4ea3ff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    #raiden-notice .sub:hover {
+      opacity: 1;
+      text-shadow: 0 0 8px #4ea3ff;
+    }
+
+    .raiden-line {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #fff, #4ea3ff, #fff);
+      animation: noticeLightning 1.2s ease infinite;
+      margin-top: 10px;
+      filter: drop-shadow(0 0 6px #4ea3ff);
+    }
+
+    @keyframes noticeLightning {
+      0%   { opacity: 0.3; }
+      50%  { opacity: 1; box-shadow: 0 0 15px #4ea3ff; }
+      100% { opacity: 0.3; }
+    }
+
+    /* ===== 3×3 BRAND GRID ===== */
+    .brand-grid {
+      max-width: 1200px;
+      margin: 120px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .brand-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 40px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .brand-card:hover {
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-4px);
+    }
+
+    .brand-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .brand-card p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* ===== SHORT ABOUT ===== */
+    .short-about {
+      margin: 120px auto 80px;
+      max-width: 700px;
+      font-size: 16px;
+      line-height: 2;
+      opacity: 0.85;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      margin-top: 80px;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      opacity: 0.85;
+    }
+
+    footer a {
+      color: #4ea3ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 背景雷 -->
+  <div class="lightning-bg"></div>
+
+  <!-- ハンバーガーボタン -->
+  <div class="raiden-menu-btn">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- メニュー本体 -->
+  <div class="raiden-menu">
+    <div class="menu-inner">
+      <div class="menu-title">RAIDEN MENU</div>
+      <ul>
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="look.html">LOOK</a></li>
+        <li><a href="gallery.html">GALLERY</a></li>
+        <li><a href="season.html">SEASON</a></li>
+        <li><a href="news.html">NEWS</a></li>
+        <li><a href="1st_tshirt.html">1st T-SHIRT</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="contact.html">CONTACT</a></li>
+        <li><a href="comingsoon.html">SHOP</a></li>
+        <li><a href="comingsoon.html">MATERIAL</a></li>
+        <li><a href="comingsoon.html">STORY</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- お知らせバー -->
+  <div id="raiden-notice">
+    <span class="notice-close">×</span>
+    <p>
+      1st T-SHIRT RELEASE<br>
+      <a href="1st_tshirt.html" class="sub">詳細はこちらから</a>
+    </p>
+    <div class="raiden-line"></div>
+  </div>
+
+  <!-- HERO全体 -->
+  <div class="hero-wrap">
+    <div class="hero-lightning-line"></div>
+
+    <div class="hero-logo">RAIDEN</div>
+
+    <img src="P_RAIDEN_BASE.PNG" class="hero-illust" alt="RAIDEN 雷神イラスト">
+
+    <div class="hero-catch">
+      オリジナルブランド『RAIDEN』。<br>
+      雷神、風神、追儺仁──日本絵画の世界を纏う四季のコレクション。
+    </div>
+
+  <!-- ===== 3×3 BRAND GRID ===== -->
+  <div class="brand-grid">
+
+    <a href="look.html" class="brand-card">
+      <h3>LOOK</h3>
+      <p>作品一覧を見る</p>
+    </a>
+
+    <a href="gallery.html" class="brand-card">
+      <h3>GALLERY</h3>
+      <p>雷神アートを見る</p>
+    </a>
+
+    <a href="season.html" class="brand-card">
+      <h3>SEASON</h3>
+      <p>四季 × 雷神の世界観</p>
+    </a>
+
+    <a href="news.html" class="brand-card">
+      <h3>NEWS</h3>
+      <p>最新情報・リリース</p>
+    </a>
+
+    <a href="about.html" class="brand-card">
+      <h3>ABOUT</h3>
+      <p>ブランドの物語</p>
+    </a>
+
+    <a href="contact.html" class="brand-card">
+      <h3>CONTACT</h3>
+      <p>Instagram / メール</p>
+    </a>
+
+    <a href="comingsoon.html" class="brand-card">
+      <h3>SHOP</h3>
+      <p>COMING SOON</p>
+    </a>
+
+    <a href="comingsoon.html" class="brand-card">
+      <h3>MATERIAL</h3>
+      <p>COMING SOON</p>
+    </a>
+
+    <a href="comingsoon.html" class="brand-card">
+      <h3>STORY</h3>
+      <p>COMING SOON</p>
+    </a>
+
+  </div>
+
+  <!-- SHORT ABOUT -->
+  <div class="short-about">
+    RAIDEN は、雷の速度と街の温度をまとう。
+    ファッションに閃光を落とすブランド。
+    すべての服は、瞬間の力を形にする。
+  </div>
+
+  <!-- フッター -->
+  <footer>
+    Instagram：<a href="https://www.instagram.com/raiden_30214039016" target="_blank">@raiden_30214039016</a><br>
+    メール：<a href="mailto:raiden.info@via.tokyo.jp">raiden.info@via.tokyo.jp</a>
+  </footer>
+
+  <!-- JS：お知らせ＆メニュー -->
+  <script>
+    // お知らせバー
+    window.addEventListener('load', () => {
+      const notice = document.getElementById('raiden-notice');
+      const closeBtn = document.querySelector('.notice-close');
+
+      // 表示
+      setTimeout(() => {
+        notice.style.transition = "opacity 1s ease, top 1s ease";
+        notice.style.opacity = "1";
+        notice.style.top = "25px";
+      }, 400);
+
+      // 非表示
+      function hideNotice() {
+        notice.style.transition = "opacity 1s ease, top 1s ease";
+        notice.style.opacity = "0";
+        notice.style.top = "-120px";
+        notice.style.pointerEvents = "none";
+      }
+
+      // 10秒後に自動で閉じる
+      setTimeout(hideNotice, 10000);
+
+      // ×ボタンで閉じる
+      closeBtn.addEventListener('click', hideNotice);
+    });
+
+    // ハンバーガーメニュー
+    window.addEventListener('load', () => {
+      const btn = document.querySelector('.raiden-menu-btn');
+      const menu = document.querySelector('.raiden-menu');
+
+      btn.addEventListener('click', () => {
+        const isActive = btn.classList.toggle('active');
+        if (isActive) {
+          menu.classList.add('show');
+        } else {
+          menu.classList.remove('show');
+        }
+      });
+
+      // メニュー外クリックで閉じる
+      menu.addEventListener('click', (e) => {
+        if (e.target === menu) {
+          btn.classList.remove('active');
+          menu.classList.remove('show');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
+
+
