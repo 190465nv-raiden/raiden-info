@@ -98,69 +98,68 @@
       color: #4ea3ff;
     }
 
-      #form-notice {
-  position: fixed;
-  top: -120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 520px;
-  background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
-  border: 1px solid rgba(255,255,255,0.5);
-  padding: 18px 0 14px;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 0.12em;
-  color: #fff;
-  opacity: 0;
-  z-index: 9999;
-  border-radius: 6px;
-  box-shadow: 0 0 25px rgba(255,255,255,0.25);
-}
+    #form-notice {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 520px;
+      background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 18px 0 14px;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.12em;
+      color: #fff;
+      opacity: 0;
+      z-index: 9999;
+      border-radius: 6px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.25);
+    }
 
-.notice-close {
-  position: absolute;
-  right: 12px;
-  top: 8px;
-  font-size: 22px;
-  cursor: pointer;
-  opacity: 0.8;
-  z-index: 10000;
-  transition: 0.3s;
-}
+    .notice-close {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0.8;
+      z-index: 10000;
+      transition: 0.3s;
+    }
 
-.notice-close:hover {
-  opacity: 1;
-  color: #4ea3ff;
-}
+    .notice-close:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
 
-#form-notice p {
-  margin: 0;
-  font-size: 17px;
-}
+    #form-notice p {
+      margin: 0;
+      font-size: 17px;
+    }
 
-#form-notice .sub {
-  font-size: 13px;
-  opacity: 0.85;
-  letter-spacing: 0.08em;
-  color: #4ea3ff;
-}
+    #form-notice .sub {
+      font-size: 13px;
+      opacity: 0.85;
+      letter-spacing: 0.08em;
+      color: #4ea3ff;
+    }
 
-.raiden-line {
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #fff, #4ea3ff, #fff);
-  animation: lightning 1.2s ease infinite;
-  margin-top: 10px;
-  filter: drop-shadow(0 0 6px #4ea3ff);
-}
+    .raiden-line {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #fff, #4ea3ff, #fff);
+      animation: lightning 1.2s ease infinite;
+      margin-top: 10px;
+      filter: drop-shadow(0 0 6px #4ea3ff);
+    }
 
-@keyframes lightning {
-  0% { opacity: 0.3; }
-  50% { opacity: 1; box-shadow: 0 0 15px #4ea3ff; }
-  100% { opacity: 0.3; }
-}
-
+    @keyframes lightning {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; box-shadow: 0 0 15px #4ea3ff; }
+      100% { opacity: 0.3; }
+    }
   </style>
 </head>
 
@@ -187,28 +186,40 @@
     <a href="contact.html" class="back">← CONTACT に戻る</a>
   </div>
 
-    <div id="form-notice">
-  <span class="notice-close">×</span>
-  <p>
-    お問い合わせを送信しました<br>
-    <span class="sub">RAIDENより折り返しご連絡いたします</span>
-  </p>
-  <div class="raiden-line"></div>
-</div>
+  <div id="form-notice">
+    <span class="notice-close">×</span>
+    <p>
+      お問い合わせを送信しました<br>
+      <span class="sub">RAIDENより折り返しご連絡いたします</span>
+    </p>
+    <div class="raiden-line"></div>
+  </div>
 
 <script>
   function sendForm(e) {
     e.preventDefault();
 
+    // 送信データ
+    const data = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      message: e.target.message.value
+    };
+
+    // GAS に送信
+    fetch("https://script.google.com/macros/s/AKfycbxxtp98ogVzFADmHpkhSgtwQB7Y9agqzFdmR97Eu5RlhP-QKylWDgbTPbf20xPj4ZAG5g/exec", {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    // 通知表示
     const notice = document.getElementById('form-notice');
     const closeBtn = document.querySelector('.notice-close');
 
-    // 表示アニメーション
     notice.style.transition = "opacity 1s ease, top 1s ease";
     notice.style.opacity = "1";
     notice.style.top = "25px";
 
-    // 閉じる処理
     function hideNotice() {
       notice.style.transition = "opacity 1s ease, top 1s ease";
       notice.style.opacity = "0";
@@ -216,11 +227,10 @@
       notice.style.pointerEvents = "none";
     }
 
-    // 5秒後に自動で消える（5票）
     setTimeout(hideNotice, 5000);
-
     closeBtn.addEventListener('click', hideNotice);
   }
 </script>
+
 </body>
 </html>
