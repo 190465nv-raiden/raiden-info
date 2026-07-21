@@ -2,10 +2,9 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>CONTACT | RAIDEN</title>
+  <title>RAIDEN – CONTACT FORM</title>
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <!-- フォント -->
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
   <style>
@@ -15,47 +14,78 @@
       color: #fff;
       font-family: 'Zen Kaku Gothic New', sans-serif;
       text-align: center;
-      padding: 120px 20px;
     }
 
-    h1 {
+    .hero {
+      padding: 120px 20px 40px;
+      background: url('ink-texture.png') center/cover no-repeat;
+      background-color: rgba(0,0,0,0.55);
+    }
+
+    .title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 48px;
-      letter-spacing: 0.15em;
-      margin-bottom: 40px;
-      text-shadow: 0 0 25px rgba(255,255,255,0.25);
+      font-size: 42px;
+      letter-spacing: 0.18em;
+      margin-bottom: 20px;
     }
 
-    .section {
-      max-width: 650px;
+    .form-box {
+      max-width: 600px;
       margin: 40px auto;
-      line-height: 2.2;
-      font-size: 18px;
+      text-align: left;
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
       opacity: 0.9;
     }
 
-    .contact-links {
-      margin: 60px auto;
-      font-size: 20px;
-      line-height: 2.4;
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 16px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
     }
 
-    .contact-links a {
-      color: #4ea3ff;
-      text-decoration: none;
+    textarea {
+      height: 150px;
+      resize: none;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #4ea3ff;
+      color: #000;
+      text-align: center;
+      border-radius: 4px;
+      font-size: 18px;
       letter-spacing: 0.1em;
+      text-decoration: none;
       transition: 0.3s;
+      cursor: pointer;
     }
 
-    .contact-links a:hover {
-      color: #7fc2ff;
+    .btn:hover {
+      background: #7fc2ff;
+      box-shadow: 0 0 15px #4ea3ff;
     }
 
     .back {
-      margin-top: 80px;
-    }
-
-    .back a {
+      margin-top: 40px;
+      display: inline-block;
       color: #fff;
       opacity: 0.7;
       text-decoration: none;
@@ -63,33 +93,144 @@
       transition: 0.3s;
     }
 
-    .back a:hover {
+    .back:hover {
       opacity: 1;
       color: #4ea3ff;
     }
+
+    #form-notice {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 520px;
+      background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 18px 0 14px;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.12em;
+      color: #fff;
+      opacity: 0;
+      z-index: 9999;
+      border-radius: 6px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.25);
+    }
+
+    .notice-close {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0.8;
+      z-index: 10000;
+      transition: 0.3s;
+    }
+
+    .notice-close:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+
+    #form-notice p {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    #form-notice .sub {
+      font-size: 13px;
+      opacity: 0.85;
+      letter-spacing: 0.08em;
+      color: #4ea3ff;
+    }
+
+    .raiden-line {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #fff, #4ea3ff, #fff);
+      animation: lightning 1.2s ease infinite;
+      margin-top: 10px;
+      filter: drop-shadow(0 0 6px #4ea3ff);
+    }
+
+    @keyframes lightning {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; box-shadow: 0 0 15px #4ea3ff; }
+      100% { opacity: 0.3; }
+    }
   </style>
 </head>
+
 <body>
 
-  <h1>CONTACT</h1>
+  <div class="hero">
+    <div class="title">CONTACT FORM</div>
 
-  <div class="section">
-    RAIDEN へのお問い合わせは、以下の公式アカウントより受け付けています。<br>
-    ブランドに関するご質問、新作情報、コラボ依頼などお気軽にご連絡ください。
+    <div class="form-box">
+      <form action="#" method="post" onsubmit="sendForm(event)">
+        <label>お名前</label>
+        <input type="text" name="name" required>
+
+        <label>メールアドレス</label>
+        <input type="email" name="email" required>
+
+        <label>お問い合わせ内容</label>
+        <textarea name="message" required></textarea>
+
+        <button class="btn" type="submit">送信する</button>
+      </form>
+    </div>
+
+    <a href="contact.html" class="back">← CONTACT に戻る</a>
   </div>
 
-    <div class="contact-links">
-  <a href="form.html">お問い合わせフォームはこちら</a>
-</div>
-
-  <div class="contact-links">
-    Instagram：<a href="https://www.instagram.com/raiden_30124039016" target="_blank">@raiden_30124039016</a><br>
-    メール：<a href="mailto:raiden.info@via.tokyo.jp">raiden.info@via.tokyo.jp</a>
+  <div id="form-notice">
+    <span class="notice-close">×</span>
+    <p>
+      お問い合わせを送信しました<br>
+      <span class="sub">RAIDENより折り返しご連絡いたします</span>
+    </p>
+    <div class="raiden-line"></div>
   </div>
 
-  <div class="back">
-    <a href="index.html">← BACK TO HOME</a>
-  </div>
+<script>
+  function sendForm(e) {
+    e.preventDefault();
+
+    // 送信データ
+    const data = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      message: e.target.message.value
+    };
+
+    // GAS に送信
+    fetch("https://script.google.com/macros/s/AKfycbwnS8MmN2ZGXXSjoJVdgdpDAK3ze1u3vLL31WHeadn8nPe3hmr57aB62F6LyW2jqRKZcQ/exec", {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    // 通知表示
+    const notice = document.getElementById('form-notice');
+    const closeBtn = document.querySelector('.notice-close');
+
+    notice.style.transition = "opacity 1s ease, top 1s ease";
+    notice.style.opacity = "1";
+    notice.style.top = "25px";
+
+    function hideNotice() {
+      notice.style.transition = "opacity 1s ease, top 1s ease";
+      notice.style.opacity = "0";
+      notice.style.top = "-120px";
+      notice.style.pointerEvents = "none";
+    }
+
+    setTimeout(hideNotice, 5000);
+    closeBtn.addEventListener('click', hideNotice);
+  }
+</script>
 
 </body>
 </html>
