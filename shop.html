@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RAIDEN | SHOP</title>
+
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- フォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    /* 全体のトーン */
+    body {
+      background: #0a0a0a;
+      color: #f2f2f2;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* SHOPタイトル */
+    header h1 {
+      text-align: center;
+      padding: 40px 0 10px;
+      font-size: 32px;
+      letter-spacing: 3px;
+      color: #ffffff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+    }
+
+    /* SHOP説明文 */
+    .shop-desc {
+      text-align: center;
+      color: #ccc;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    /* 2×2 グリッド */
+    .shop-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      padding: 0 40px;
+    }
+
+    /* 商品カード */
+    .item {
+      background: #111;
+      border: 1px solid #222;
+      padding: 20px;
+      text-decoration: none;
+      color: #f2f2f2;
+      transition: 0.3s ease;
+      display: block;
+      text-align: center;
+    }
+
+    .item:hover {
+      border-color: #444;
+      background: #151515;
+      transform: translateY(-4px);
+    }
+
+    /* 商品画像（小さく＆中央寄せ） */
+    .item img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      margin: 0 auto 15px;
+      display: block;
+      border-bottom: 1px solid #222;
+      padding-bottom: 10px;
+    }
+
+    /* 商品名 */
+    .item h3 {
+      font-size: 20px;
+      margin: 10px 0 5px;
+      letter-spacing: 1px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+    }
+
+    /* 商品説明 */
+    .item p {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    /* BACK TO HOME（下中央） */
+    .back {
+      text-align: center;
+      margin: 60px 0 40px;
+    }
+
+    .back a {
+      color: #4ea3ff;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: 0.3s;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .back a:hover {
+      color: #7fc2ff;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>RAIDEN SHOP</h1>
+  </header>
+
+  <div class="shop-desc">
+    RAIDENの作品を一覧でご覧いただけます。<br>
+    作品の詳細ページから、各デザインの背景をご確認いただけます。
+  </div>
+
+  <main>
+    <div class="shop-list">
+
+      <!-- A1 黒 -->
+      <a href="shop-a1.html" class="item">
+        <img src="shop-tshirt-a1.png" alt="A1 黒">
+        <h3>A1 – 黒</h3>
+        <p>RAIDENのロゴをTシャツに流し込んだ作品。</p>
+      </a>
+
+      <!-- A2 赤 -->
+      <a href="shop-a2.html" class="item">
+        <img src="shop-tshirt-a2.png" alt="A2 赤">
+        <h3>A2 – 赤</h3>
+        <p>RAIDENのロゴを赤色で力強く表現した作品。</p>
+      </a>
+
+      <!-- B1 黒 -->
+      <a href="shop-b1.html" class="item">
+        <img src="shop-tshirt-b1.png" alt="B1 黒">
+        <h3>B1 – 黒</h3>
+      </a>
+
+      <!-- B2 赤 -->
+      <a href="shop-b2.html" class="item">
+        <img src="shop-tshirt-b2.png" alt="B2 赤">
+        <h3>B2 – 赤</h3>
+      </a>
+
+    </div>
+  </main>
+
+  <div class="back">
+    <a href="index.html">← BACK TO HOME</a>
+  </div>
+
+</body>
+</html>

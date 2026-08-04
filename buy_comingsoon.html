@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RAIDEN – BUY COMING SOON</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* ====== メインビジュアル ====== */
+    .hero {
+      padding: 140px 20px 40px;
+      background: url('ink-texture.png') center/cover no-repeat;
+      background-color: rgba(0,0,0,0.55);
+    }
+
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 48px;
+      letter-spacing: 0.18em;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .desc {
+      max-width: 650px;
+      margin: 40px auto;
+      line-height: 2.1;
+      font-size: 17px;
+      opacity: 0.9;
+    }
+
+    .back {
+      margin-top: 60px;
+      display: inline-block;
+      color: #fff;
+      opacity: 0.7;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: 0.3s;
+    }
+
+    .back:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+
+    /* ====== 通知UI ====== */
+    #buy-notice {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 95%;
+      max-width: 520px;
+      background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 18px 0 14px;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.12em;
+      color: #fff;
+      opacity: 0;
+      z-index: 9999;
+      border-radius: 6px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.25);
+    }
+
+    .notice-close {
+      position: absolute;
+      right: 12px;
+      top: 8px;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0.8;
+      z-index: 10000;
+      transition: 0.3s;
+    }
+
+    .notice-close:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+
+    #buy-notice p {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    #buy-notice .sub {
+      font-size: 13px;
+      opacity: 0.85;
+      letter-spacing: 0.08em;
+      color: #4ea3ff;
+    }
+
+    .raiden-line {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #fff, #4ea3ff, #fff);
+      animation: lightning 1.2s ease infinite;
+      margin-top: 10px;
+      filter: drop-shadow(0 0 6px #4ea3ff);
+    }
+
+    @keyframes lightning {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; box-shadow: 0 0 15px #4ea3ff; }
+      100% { opacity: 0.3; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ====== メインビジュアル ====== -->
+  <div class="hero">
+    <div class="title">COMING SOON</div>
+
+    <div class="desc">
+      RAIDEN 1st T-SHIRT の購入ページは現在準備中です。<br>
+      公開までしばらくお待ちください。
+    </div>
+
+    <a href="1st_tshirt.html" class="back">← 1st Tシャツページに戻る</a>
+  </div>
+
+  <!-- ====== JS：通知UIの動作 ====== -->
+  <script>
+    window.addEventListener('load', () => {
+      const notice = document.getElementById('buy-notice');
+      const closeBtn = document.querySelector('.notice-close');
+
+      // 表示アニメーション
+      setTimeout(() => {
+        notice.style.transition = "opacity 1s ease, top 1s ease";
+        notice.style.opacity = "1";
+        notice.style.top = "25px";
+      }, 200);
+
+      // 閉じる処理
+      function hideNotice() {
+        notice.style.transition = "opacity 1s ease, top 1s ease";
+        notice.style.opacity = "0";
+        notice.style.top = "-120px";
+        notice.style.pointerEvents = "none";
+      }
+
+      // 5秒後に自動で消える
+      setTimeout(hideNotice, 5000);
+
+      // バツボタンで消える
+      closeBtn.addEventListener('click', hideNotice);
+    });
+  </script>
+
+</body>
+</html>
