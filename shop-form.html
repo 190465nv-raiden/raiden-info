@@ -539,8 +539,9 @@ alertBackBtn.addEventListener("click", () => {
       (document.getElementById("building").value || "");
 
     /* ▼ GAS送信 */
-   fetch("https://script.google.com/macros/s/AKfycby22xgRUxphAKO0IfHADIlVaJCjAA8HXEWOlfD74PS3t8tZOGkTvdIx-Wn0XggmuM9c/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzIht0nvCTJO35oNDph9f7V7_LK-lqQMk37rAAs22nSYnXmH0t1LbIbQuXnOTVuzouM/exec", {
   method: "POST",
+  mode: "cors",
   headers: {
     "Content-Type": "application/json"
   },
@@ -554,6 +555,7 @@ alertBackBtn.addEventListener("click", () => {
     note: document.getElementById("note").value
   })
 })
+
 
     .then(() => {
       /* ▼ 成功タブ（雷マークあり） */
