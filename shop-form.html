@@ -313,7 +313,7 @@
     <label>番地（例 1丁目2874番地）</label>
     <input type="text" id="block" required>
 
-    <label>建物名（任意）</label>
+    <label>建物名・部屋番号（任意）</label>
     <input type="text" id="building">
 
     <label>備考（任意）</label>
@@ -539,7 +539,7 @@ alertBackBtn.addEventListener("click", () => {
       (document.getElementById("building").value || "");
 
     /* ▼ GAS送信 */
-    fetch("https://script.google.com/macros/s/AKfycbzITn2bnt-_lTtAhW9lSMyB-fF6mKNtJtUPABqK4GAAMMzqCbdbNAlmG7lz8IEjgU4x/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxjzjuvQ5aY1RJW9FEXVOlewUSJMC-UBNHtoHrgL6LYZMkG0gD2SoK2DCTmc2U2Nao9/exec", {
   method: "POST",
   mode: "no-cors",
   headers: {
