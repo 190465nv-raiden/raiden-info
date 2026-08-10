@@ -371,7 +371,6 @@
   <!-- ▼ RAIDEN電光タブ通知 -->
   <div id="alertTab">
     <button id="alertClose">×</button>
-    <div id="alertIcon">⚡</div>
     <div id="alertTitle"></div>
     <div id="alertText"></div>
     <button id="alertBackBtn">BACK TO HOME</button>
@@ -442,12 +441,12 @@ function showAlertTab(title, text, isSuccess = false) {
     window.location.href = "/";
   });
 
-  /* ▼ 商品価格一覧（全部2000円） */
+  /* ▼ 商品価格一覧（全部2500円） */
   const prices = {
-    "A1 – 黒": "¥2,000",
-    "A2 – 白": "¥2,000",
-    "B1 – 黒": "¥2,000",
-    "B2 – 白": "¥2,000"
+    "A1 – 黒": "¥2,500",
+    "A2 – 白": "¥2,500",
+    "B1 – 黒": "¥2,500",
+    "B2 – 白": "¥2,500"
   };
 
   const itemSelect = document.getElementById("item");
