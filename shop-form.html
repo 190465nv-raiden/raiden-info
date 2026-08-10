@@ -310,7 +310,7 @@
     <label>市区町村（例 桐生市広沢町）</label>
     <input type="text" id="city" required>
 
-    <label>番地（例 1丁目2874）</label>
+    <label>番地（例 1丁目2874番地）</label>
     <input type="text" id="block" required>
 
     <label>建物名（任意）</label>
@@ -538,10 +538,13 @@ alertBackBtn.addEventListener("click", () => {
       document.getElementById("block").value + " " +
       (document.getElementById("building").value || "");
 
-    /* ▼ GAS送信 */fetch("https://script.google.com/macros/s/AKfycbzITn2bnt-_lTtAhW9lSMyB-fF6mKNtJtUPABqK4GAAMMzqCbdbNAlmG7lz8IEjgU4x/exec", {
+    /* ▼ GAS送信 */
+    fetch("https://script.google.com/macros/s/AKfycbzITn2bnt-_lTtAhW9lSMyB-fF6mKNtJtUPABqK4GAAMMzqCbdbNAlmG7lz8IEjgU4x/exec", {
   method: "POST",
-  mode: "cors",
-  headers: { "Content-Type": "application/json" },
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
   body: JSON.stringify({
     item: itemSelect.value,
     price: prices[itemSelect.value],
@@ -552,28 +555,19 @@ alertBackBtn.addEventListener("click", () => {
     note: document.getElementById("note").value
   })
 })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      showAlertTab(
-        "購入完了",
-        "この度はご購入ありがとうございます。内容を確認のうえ、担当よりご連絡いたします。",
-        true
-      );
-    } else {
-      showAlertTab(
-        "送信に失敗しました",
-        "時間をおいて再度お試しください。",
-        false
-      );
-    }
-  })
-  .catch(() => {
-    showAlertTab(
-      "送信に失敗しました",
-      "通信エラーが発生しました。",
-      false
-    );
-  });
- });
+.then(() => {
+  showAlertTab(
+    "購入完了",
+    "この度はご購入ありがとうございます。内容を確認のうえ、担当よりご連絡いたします。",
+    true
+  );
+})
+.catch(() => {
+  showAlertTab(
+    "送信に失敗しました",
+    "通信エラーが発生しました。",
+    false
+  );
+});
+});
 </script>
