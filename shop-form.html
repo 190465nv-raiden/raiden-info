@@ -538,13 +538,10 @@ alertBackBtn.addEventListener("click", () => {
       document.getElementById("block").value + " " +
       (document.getElementById("building").value || "");
 
-    /* ▼ GAS送信 */
-  fetch("https://script.google.com/macros/s/AKfycbzITn2bnt-_lTtAhW9lSMyB-fF6mKNtJtUPABqK4GAAMMzqCbdbNAlmG7lz8IEjgU4x/exec", {
+    /* ▼ GAS送信 */fetch("https://script.google.com/macros/s/AKfycbzITn2bnt-_lTtAhW9lSMyB-fF6mKNtJtUPABqK4GAAMMzqCbdbNAlmG7lz8IEjgU4x/exec", {
   method: "POST",
   mode: "cors",
-  headers: {
-    "Content-Type": "application/json"
-  },
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     item: itemSelect.value,
     price: prices[itemSelect.value],
@@ -555,23 +552,28 @@ alertBackBtn.addEventListener("click", () => {
     note: document.getElementById("note").value
   })
 })
-
-
-    .then(() => {
-      /* ▼ 成功タブ（雷マークあり） */
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
       showAlertTab(
         "購入完了",
         "この度はご購入ありがとうございます。内容を確認のうえ、担当よりご連絡いたします。",
         true
       );
-    })
-    .catch(() => {
-      /* ▼ 失敗タブ（雷マークなし） */
+    } else {
       showAlertTab(
         "送信に失敗しました",
         "時間をおいて再度お試しください。",
         false
       );
-    });
+    }
+  })
+  .catch(() => {
+    showAlertTab(
+      "送信に失敗しました",
+      "通信エラーが発生しました。",
+      false
+    );
   });
+ });
 </script>
