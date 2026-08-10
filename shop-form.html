@@ -551,7 +551,7 @@ function showAlertTab(title, text, isSuccess = false) {
       (document.getElementById("building").value || "");
 
     /* ▼ GAS送信 */
-    fetch("https://script.google.com/macros/s/AKfycbzQ6EyfBTYzmG1NUVTFIScGQOD_V-ZDGtqBjHqOHUcPnrxew7CI_CZ8z0kq1cneep9L/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbys5nWdl42J0JJKmr9A8Ge7PGHlj-yvJuoWizGBE7EmrG8FhliVyeBIt9IgnJlnAKwI/exec", {
       method: "POST",
       body: JSON.stringify({
         item: itemSelect.value,
