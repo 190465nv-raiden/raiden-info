@@ -377,42 +377,37 @@
   </div>
 
 </div>
-<script>
-  /* ▼ RAIDENタブ通知の要素 */
-  const alertTab = document.getElementById("alertTab");
-  const alertIcon = document.getElementById("alertIcon");
-  const alertTitle = document.getElementById("alertTitle");
-  const alertText = document.getElementById("alertText");
-  const alertClose = document.getElementById("alertClose");
-  const alertBackBtn = document.getElementById("alertBackBtn");
+<script>/* ▼ RAIDENタブ通知の要素 */
+const alertTab = document.getElementById("alertTab");
+const alertTitle = document.getElementById("alertTitle");
+const alertText = document.getElementById("alertText");
+const alertClose = document.getElementById("alertClose");
+const alertBackBtn = document.getElementById("alertBackBtn");
 
-  let alertTimer = null; // 自動消滅用タイマー
+let alertTimer = null; // 自動消滅用タイマー
 
-  /* ▼ タブ通知を表示する関数（成功／失敗で色とアイコンを切り替え） */
+/* ▼ タブ通知を表示する関数（成功／失敗で色を切り替え） */
 function showAlertTab(title, text, isSuccess = false) {
   alertTitle.textContent = title;
   alertText.textContent = text;
 
-  /* ▼ 成功タブ（青電光＋雷マーク） */
+  /* ▼ 成功タブ（青） */
   if (isSuccess) {
     alertTab.classList.remove("error");
     alertBackBtn.style.display = "block";
-    alertIcon.style.display = "block";
-    alertIcon.style.color = "#4ea3ff";
   }
-  /* ▼ 失敗タブ（赤電光＋雷マーク非表示） */
+  /* ▼ 失敗タブ（赤） */
   else {
     alertTab.classList.add("error");
     alertBackBtn.style.display = "none";
-    alertIcon.style.display = "none";
   }
 
   /* ▼ フェードインを確実に発生させるためのリセット */
-  alertTab.style.opacity = "0";        // ← ここが重要
+  alertTab.style.opacity = "0";
   alertTab.style.display = "block";
 
   setTimeout(() => {
-    alertTab.style.opacity = "1";      // ← フェードイン確定
+    alertTab.style.opacity = "1";
   }, 10);
 
   /* ▼ 10秒後にフェードアウトして消える */
@@ -426,20 +421,20 @@ function showAlertTab(title, text, isSuccess = false) {
   }, 10000);
 }
 
-  /* ▼ ×ボタンで閉じる（即フェードアウト） */
-  alertClose.addEventListener("click", () => {
-    if (alertTimer) clearTimeout(alertTimer);
+/* ▼ ×ボタンで閉じる（即フェードアウト） */
+alertClose.addEventListener("click", () => {
+  if (alertTimer) clearTimeout(alertTimer);
 
-    alertTab.style.opacity = "0";
-    setTimeout(() => {
-      alertTab.style.display = "none";
-    }, 400);
-  });
+  alertTab.style.opacity = "0";
+  setTimeout(() => {
+    alertTab.style.display = "none";
+  }, 400);
+});
 
-  /* ▼ BACK TO HOME */
-  alertBackBtn.addEventListener("click", () => {
-    window.location.href = "/";
-  });
+/* ▼ BACK TO HOME */
+alertBackBtn.addEventListener("click", () => {
+  window.location.href = "/";
+});
 
   /* ▼ 商品価格一覧（全部2500円） */
   const prices = {
