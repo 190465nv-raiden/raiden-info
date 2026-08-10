@@ -539,18 +539,22 @@ alertBackBtn.addEventListener("click", () => {
       (document.getElementById("building").value || "");
 
     /* ▼ GAS送信 */
-    fetch("https://script.google.com/macros/s/AKfycby22xgRUxphAKO0IfHADIlVaJCjAA8HXEWOlfD74PS3t8tZOGkTvdIx-Wn0XggmuM9c/exec", {
-      method: "POST",
-      body: JSON.stringify({
-        item: itemSelect.value,
-        price: prices[itemSelect.value],
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        tel: document.getElementById("tel").value,
-        address: addressFull,
-        note: document.getElementById("note").value
-      })
-    })
+   fetch("https://script.google.com/macros/s/AKfycby22xgRUxphAKO0IfHADIlVaJCjAA8HXEWOlfD74PS3t8tZOGkTvdIx-Wn0XggmuM9c/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    item: itemSelect.value,
+    price: prices[itemSelect.value],
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    tel: document.getElementById("tel").value,
+    address: addressFull,
+    note: document.getElementById("note").value
+  })
+})
+
     .then(() => {
       /* ▼ 成功タブ（雷マークあり） */
       showAlertTab(
