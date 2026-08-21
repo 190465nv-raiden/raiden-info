@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RAIDEN – A1</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- フォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* 背景雷アニメーション */
+    @keyframes lightningFlash {
+      0%, 95% { opacity: 0; }
+      96% { opacity: 0.4; }
+      97% { opacity: 0.8; }
+      98% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+
+    .lightning-bg {
+      position: fixed;
+      inset: 0;
+      background: url('lightning.jpg') center/cover no-repeat;
+      opacity: 0;
+      animation: lightningFlash 6s infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* HERO（ロゴを上ギリギリ & 中央揃え） */
+    .hero {
+      padding: 20px 20px 110px;
+      background: url('ink-texture.png') center/cover no-repeat;
+      background-color: rgba(0,0,0,0.55);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* ← ロゴも画像も中央揃え */
+    }
+
+    /* 中央上ロゴ（100px & 上ギリギリ） */
+    .hero-logo {
+      width: 100px;
+      margin: 0 auto 30px;
+      opacity: 0;
+      animation: fadeInLogo 1.8s ease forwards;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.25));
+      cursor: pointer;
+    }
+
+    @keyframes fadeInLogo {
+      to { opacity: 1; }
+    }
+
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 46px;
+      letter-spacing: 0.18em;
+      margin-bottom: 45px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* 商品画像を中央に強制配置するラッパー */
+    .item-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center; /* ← 絶対中央 */
+      align-items: center;
+    }
+
+    /* 商品画像（上下にふわっと動く） */
+    .item-img {
+      width: 380px;
+      max-width: 90%;
+      margin: 70px auto 50px;
+      display: block;
+      filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* 説明文 */
+    .desc {
+      max-width: 700px;
+      margin: 60px auto 30px;
+      line-height: 2.2;
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .price {
+      margin-top: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+    }
+
+    /* ボタン（青く光る） */
+    .btn {
+      display: inline-block;
+      margin-top: 45px;
+      padding: 16px 45px;
+      border: 1px solid #4ea3ff;
+      color: #4ea3ff;
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      transition: 0.3s;
+      border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .btn:hover {
+      background: #4ea3ff;
+      color: #000;
+      box-shadow: 0 0 20px #4ea3ff;
+    }
+
+    /* 戻るリンク */
+    .back {
+      margin-top: 90px;
+      display: inline-block;
+      color: #fff;
+      opacity: 0.7;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: 0.3s;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .back:hover {
+      opacity: 1;
+      color: #4ea3ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="lightning-bg"></div>
+
+  <div class="hero">
+
+    <!-- 中央上ロゴ（クリックでトップへ） -->
+    <a href="index.html">
+      <img src="ab12-logo.png" class="hero-logo" alt="RAIDEN Logo">
+    </a>
+
+    <div class="title">A1 – 黒</div>
+
+    <!-- 商品画像（中央揃え専用ラッパー） -->
+    <div class="item-img-wrap">
+      <img src="shop-tshirt-a1.png" class="item-img" alt="A1 – 黒">
+    </div>
+
+    <div class="desc">
+      形ではなく、気配を纏う。<br>
+      RAIDENのロゴをTシャツに流し込んだ一着。<br>
+      黒地に静かに浮かぶロゴが、存在感だけを残す。
+    </div>
+
+    <div class="price">¥2,500</div>
+
+    <a href="shop-form.html" class="btn">購入ページへ</a>
+
+    <br><br>
+    <a href="shop.html" class="back">← BACK TO SHOP</a>
+  </div>
+
+</body>
+</html>
