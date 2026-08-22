@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>RAIDEN – ご注文ありがとうございます</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="style.css"> <!-- 必要なら -->
+<style>
+  body {
+    background: #000;
+    color: #fff;
+    font-family: "Noto Sans JP", sans-serif;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .thanks-box {
+    background: #0a0a0a;
+    border: 2px solid #4ea3ff;
+    border-radius: 12px;
+    padding: 40px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 25px rgba(78,163,255,0.4);
+    animation: fadeIn 0.4s ease;
+  }
+
+  .thanks-icon {
+    font-size: 48px;
+    color: #4ea3ff;
+    margin-bottom: 20px;
+  }
+
+.thanks-img {
+  width: 80px;      /* 好きなサイズに調整可能 */
+  height: auto;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+  .thanks-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  .thanks-text {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+  }
+
+  .home-btn {
+    background: #4ea3ff;
+    color: #000;
+    font-weight: bold;
+    padding: 14px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .home-btn:hover {
+    background: #fff;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="thanks-box">
+  <div class="thanks-icon">
+  <img src="ab12-logo.png" alt="RAIDEN" class="thanks-img">
+</div>
+  <div class="thanks-title">ご注文ありがとうございます</div>
+
+  <div class="thanks-text">
+    ご入力いただいた内容を受け付けました。<br>
+    担当者が確認し、発送準備を進めます。<br><br>
+    ※ 受注生産のため、発送まで2〜3週間ほどかかります。
+  </div>
+
+  <button class="home-btn" onclick="location.href='index.html'">
+    ホームへ戻る
+  </button>
+</div>
+
+</body>
+</html>

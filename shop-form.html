@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RAIDEN | 購入フォーム</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+
+  <style>
+/* ▼ 全体レイアウト */
+body {
+  background: #0a0a0a;
+  color: #f2f2f2;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.container {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ▼ タイトル */
+h1 {
+  text-align: center;
+  font-size: 28px;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.lead {
+  text-align: center;
+  color: #bfbfbf;
+  margin-bottom: 40px;
+  letter-spacing: 0.1em;
+}
+
+/* ▼ 入力欄（統一） */
+input, textarea, select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  font-size: 14px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #4ea3ff;
+  background: #181818;
+  outline: none;
+}
+
+/* ▼ ver2 エラー通知（入力欄の下に出るタイプ） */
+.input-error {
+  display: none;
+  background: #331a00;
+  border-left: 4px solid #ff9900;
+  padding: 10px 14px;
+  margin-top: -10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  color: #ffcc66;
+  font-size: 14px;
+}
+
+/* ▼ 商品価格フェードイン */
+#priceBox {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: #111;
+  border: 1px solid #333;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+/* ▼ 利用規約ボックス（フェードイン） */
+#termsBox {
+  display: none;
+  background: #111;
+  border: 1px solid #333;
+  padding: 20px;
+  margin-bottom: 20px;
+  line-height: 1.7;
+  color: #ccc;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  border-radius: 8px;
+}
+
+/* ▼ 利用規約同意（ver2デザイン完全移植） */
+.terms-check {
+  margin-top: 20px;
+  margin-bottom: 32px;   /* ← これを追加！送信ボタンとの距離が空く */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid #4ea3ff;   /* ← ver2の青枠 */
+  border-radius: 8px;          /* ← ver2の角丸 */
+  background: #0a0a0a;         /* ← ver2の黒背景 */
+  width: 100%;                 /* ← 今のフォームに合わせて最適化 */
+  box-sizing: border-box;
+  opacity: 0.4;                /* ← 規約未確認時は薄く */
+  cursor: not-allowed;
+}
+
+.terms-check.active {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* ▼ チェックボックス（ver2のシンプルな□＋青チェック） */
+.terms-check input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #4ea3ff;       /* ← チェック時に青になる */
+  cursor: pointer;
+  margin: 0;
+}
+
+/* ▼ テキスト */
+.terms-check label {
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* ▼ ボタン（RAIDEN風） */
+.raiden-btn {
+  width: 100%;
+  padding: 14px;
+  background: #0d0d0d;
+  border: 1px solid #4ea3ff;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+
+.raiden-btn:hover {
+  background: #111;
+  box-shadow: 0 0 10px #4ea3ff;
+}
+
+.raiden-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #333;
+}
+
+/* ▼ モーダルの背景（薄暗くする） */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* ▼ モーダル本体（RAIDEN風カード） */
+.modal-box {
+  background: #0a0a0a;
+  border: 2px solid #4ea3ff;
+  border-radius: 12px;
+  padding: 28px;
+  width: 85%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(78,163,255,0.4);
+  animation: modalFadeIn 0.25s ease;
+}
+
+/* ▼ アイコン（RAIDEN青） */
+.modal-icon {
+  font-size: 32px;
+  color: #4ea3ff;
+  margin-bottom: 12px;
+}
+
+/* ▼ メッセージ */
+.modal-message {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ▼ OKボタン */
+.modal-btn {
+  background: #4ea3ff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.modal-btn:hover {
+  background: #fff;
+}
+
+/* ▼ フェードイン */
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <h1>RAIDEN – 購入フォーム</h1>
+  <p class="lead">必要事項をご入力ください</p>
+
+  <!-- ▼ 価格（フェードイン） -->
+  <div id="priceBox"></div>
+
+  <!-- ▼ 商品選択 -->
+  <select id="item">
+    <option value="">商品を選択してください</option>
+    <option value="A1">A1 – 黒</option>
+    <option value="A2">A2 – 赤</option>
+    <option value="B1">B1 – 黒</option>
+    <option value="B2">B2 – 赤</option>
+  </select>
+  <div id="itemError" class="input-error"></div>
+
+  <!-- ▼ 名前 -->
+  <input type="text" id="name" placeholder="お名前">
+  <div id="nameError" class="input-error"></div>
+
+  <!-- ▼ メール -->
+  <input type="email" id="email" placeholder="メールアドレス">
+  <div id="emailError" class="input-error"></div>
+
+  <!-- ▼ 電話番号 -->
+  <input type="text" id="tel" placeholder="電話番号（10桁 or 11桁）">
+  <div id="telError" class="input-error"></div>
+
+  <!-- ▼ 都道府県 -->
+  <select id="pref">
+    <option value="">都道府県を選択</option>
+    <option>北海道</option><option>青森県</option><option>岩手県</option><option>宮城県</option>
+    <option>秋田県</option><option>山形県</option><option>福島県</option>
+    <option>茨城県</option><option>栃木県</option><option>群馬県</option>
+    <option>埼玉県</option><option>千葉県</option><option>東京都</option><option>神奈川県</option>
+    <option>新潟県</option><option>富山県</option><option>石川県</option><option>福井県</option>
+    <option>山梨県</option><option>長野県</option>
+    <option>岐阜県</option><option>静岡県</option><option>愛知県</option><option>三重県</option>
+    <option>滋賀県</option><option>京都府</option><option>大阪府</option><option>兵庫県</option>
+    <option>奈良県</option><option>和歌山県</option>
+    <option>鳥取県</option><option>島根県</option><option>岡山県</option><option>広島県</option><option>山口県</option>
+    <option>徳島県</option><option>香川県</option><option>愛媛県</option><option>高知県</option>
+    <option>福岡県</option><option>佐賀県</option><option>長崎県</option><option>熊本県</option>
+    <option>大分県</option><option>宮崎県</option><option>鹿児島県</option><option>沖縄県</option>
+  </select>
+  <div id="prefError" class="input-error"></div>
+
+  <!-- ▼ 市区町村 -->
+  <input type="text" id="city" placeholder="市区町村">
+  <div id="cityError" class="input-error"></div>
+
+  <!-- ▼ 以降の住所 -->
+  <input type="text" id="address" placeholder="市区町村以降の住所">
+  <div id="addressError" class="input-error"></div>
+
+  <!-- ▼ 建物名 -->
+  <input type="text" id="building" placeholder="建物名・部屋番号（任意）">
+
+  <!-- ▼ 備考 -->
+  <textarea id="note" placeholder="備考（任意）"></textarea>
+
+  <!-- ▼ 利用規約ボタン -->
+  <button class="raiden-btn" id="termsBtn">利用規約を確認する</button>
+
+  <!-- ▼ 利用規約 -->
+  <div id="termsBox">
+    <p>
+      本規約は、RAIDENの商品購入および関連サービスの利用に関する条件を定めるものです。<br><br>
+      ■ 個人情報の取り扱い：発送および必要な連絡のためにのみ使用します。<br><br>
+      ■ 商品について：掲載画像と実際の商品は色味が異なる場合があります。<br><br>
+      ■ 発送について：受注生産のため発送まで2〜3週間ほどかかります。<br><br>
+      ■ 支払いについて：現金のみ。受け取り時に配達員へお渡しください。<br><br>
+      ■ 返品・交換：初期不良の場合のみ対応します。<br><br>
+      ■ 禁止事項：不正注文・虚偽入力・転売目的の大量購入は禁止します。
+    </p>
+  </div>
+
+  <!-- ▼ 同意チェック（ver2仕様） -->
+  <div class="terms-check" id="termsCheck">
+    <input type="checkbox" id="agree">
+    <label for="agree">利用規約とプライバシーポリシーに同意する</label>
+  </div>
+
+  <!-- ▼ 送信ボタン -->
+  <button class="raiden-btn" id="submitBtn" disabled>送信する</button>
+
+</div>
+
+<!-- ▼ RAIDENエラーモーダル -->
+<div id="errorModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-icon">⚠</div>
+    <div id="modalMessage" class="modal-message"></div>
+    <button id="modalClose" class="modal-btn">OK</button>
+  </div>
+</div>
+
+<script>
+  // ▼ 価格フェードイン
+  const item = document.getElementById("item");
+  const priceBox = document.getElementById("priceBox");
+
+  item.addEventListener("change", () => {
+    if (item.value !== "") {
+      priceBox.style.display = "block";
+      priceBox.textContent = "価格：¥2,500";
+      setTimeout(() => priceBox.style.opacity = "1", 50);
+    } else {
+      priceBox.style.opacity = "0";
+      setTimeout(() => priceBox.style.display = "none", 300);
+    }
+  });
+
+  // ▼ 利用規約表示
+  const termsBtn = document.getElementById("termsBtn");
+  const termsBox = document.getElementById("termsBox");
+
+  termsBtn.addEventListener("click", () => {
+    termsBox.style.display = "block";
+    setTimeout(() => termsBox.style.opacity = "1", 50);
+
+    document.getElementById("termsCheck").classList.add("active");
+  });
+
+  // ▼ 同意チェック → 送信ボタン有効化
+  const agree = document.getElementById("agree");
+  const submitBtn = document.getElementById("submitBtn");
+
+  agree.addEventListener("change", () => {
+    submitBtn.disabled = !agree.checked;
+  });
+
+  // ▼ エラー通知（ver2）
+  function showError(id, msg) {
+    const box = document.getElementById(id);
+    box.textContent = msg;
+    box.style.display = "block";
+  }
+
+  function clearErrors() {
+    document.querySelectorAll(".input-error").forEach(e => {
+      e.style.display = "none";
+    });
+  }
+
+  // ▼ エラー位置へ自動スクロール
+  function scrollToError(id) {
+    const el = document.getElementById(id);
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+/* ▼ RAIDENモーダル（ここがベスト配置） */
+function showModal(msg) {
+  document.getElementById("modalMessage").textContent = msg;
+  document.getElementById("errorModal").style.display = "flex";
+}
+
+document.getElementById("modalClose").addEventListener("click", () => {
+  document.getElementById("errorModal").style.display = "none";
+});
+
+// ▼ 送信処理
+submitBtn.addEventListener("click", () => {
+
+  clearErrors();
+
+  const email = document.getElementById("email").value.trim();
+  const tel = document.getElementById("tel").value.trim();
+  const itemVal = item.value.trim();
+  const prefVal = document.getElementById("pref").value.trim();
+  const cityVal = document.getElementById("city").value.trim();
+  const addressVal = document.getElementById("address").value.trim();
+
+  if (itemVal === "") {
+    showModal("商品を選択してください。");
+    return;
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showModal("メールアドレスの形式が正しくありません。");
+    return;
+  }
+
+  if (!/^[0-9]{10,11}$/.test(tel)) {
+    showModal("電話番号は10桁または11桁で入力してください。");
+    return;
+  }
+
+  if (prefVal === "") {
+    showModal("都道府県を選択してください。");
+    return;
+  }
+
+  if (cityVal === "") {
+    showModal("市区町村を入力してください。");
+    return;
+  }
+
+  if (addressVal === "") {
+    showModal("住所を入力してください。");
+    return;
+  }
+
+  // ▼ 送信データ（GASに送るJSON）
+  const payload = {
+    item: itemVal,
+    name: document.getElementById("name").value.trim(),
+    email: email,
+    tel: tel,
+    pref: prefVal,
+    city: cityVal,
+    address: addressVal,
+    building: document.getElementById("building").value.trim(),
+    note: document.getElementById("note").value.trim()
+  };
+
+  // ▼ GAS送信枠（URLは後で入れるだけ）
+  fetch("【ここにGASのデプロイURLを入れる】", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        window.location.href = "thanks.html";
+      } else {
+        showModal("送信エラーが発生しました。");
+      }
+    })
+    .catch(err => {
+      showModal("通信エラーが発生しました。");
+    });
+
+});
+</script>
