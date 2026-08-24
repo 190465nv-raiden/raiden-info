@@ -306,7 +306,7 @@ input:focus, textarea:focus, select:focus {
       本規約は、RAIDENの商品購入および関連サービスの利用に関する条件を定めるものです。<br><br>
       ■ 個人情報の取り扱い：発送および必要な連絡のためにのみ使用します。<br><br>
       ■ 商品について：掲載画像と実際の商品は色味が異なる場合があります。<br><br>
-      ■ 発送について：受注生産のため発送まで3〜4週間ほどかかります。<br><br>
+      ■ 発送について：受注生産のため発送まで2〜3週間ほどかかります。<br><br>
       ■ 支払いについて：現金のみ。受け取り時に配達員へお渡しください。<br><br>
       ■ 返品・交換：初期不良の場合のみ対応します。<br><br>
       ■ 禁止事項：不正注文・虚偽入力・転売目的の大量購入は禁止します。
@@ -453,7 +453,7 @@ submitBtn.addEventListener("click", () => {
   };
 
   // ▼ GAS送信枠（URLは後で入れるだけ）
-  fetch("https://script.google.com/macros/s/AKfycbyjuzwfQ0rau2x7byVwMWdq4KQVM1s8o4z0vGyPe7JR0sSxyn6vfjhHabCKdaFUyX_-ng/exec", {
+  fetch("https://raiden-info.ts01.workers.dev/form", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
