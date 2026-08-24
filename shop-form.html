@@ -334,7 +334,6 @@ input:focus, textarea:focus, select:focus {
 </div>
 
 <script>
-  alert("JS読み込みOK");
 
   // ▼ 価格フェードイン
   const item = document.getElementById("item");
@@ -401,7 +400,6 @@ document.getElementById("modalClose").addEventListener("click", () => {
 
 // ▼ 送信処理
 submitBtn.addEventListener("click", () => {
-   alert("イベント発火したよ");
 
   clearErrors();
 
@@ -456,9 +454,9 @@ submitBtn.addEventListener("click", () => {
   };
 
   // ▼ GAS送信枠（URLは後で入れるだけ）
-  fetch("https://raiden-info.ts01.workers.dev/form", {
+  fetch("https://script.google.com/macros/s/AKfycbxn7-lWP63gd-yCq7L9o_fzq-O6-fNcGokx3Gs2U_EPW5-40kc0aGGL0RROqlRkxIuTWg/exec", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload)
   })
     .then(res => res.json())
