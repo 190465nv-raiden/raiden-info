@@ -2,14 +2,25 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RAIDEN</title>
   <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- フォント -->
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
 
+  <!-- QRコード読み取り用ライブラリ -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <!-- Google Sign-In SDK (SSO用) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <style>
     /* ===== ベース ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #000;
@@ -17,6 +28,7 @@
       font-family: 'Zen Kaku Gothic New', sans-serif;
       text-align: center;
       overflow-x: hidden;
+      width: 100%;
     }
 
     /* 背景雷（うっすら光る） */
@@ -41,15 +53,16 @@
     /* ===== HERO ===== */
     .hero-wrap {
       position: relative;
-      padding: 120px 20px 80px;
+      padding: clamp(80px, 15vw, 120px) 20px clamp(40px, 8vw, 80px);
       background: url('ink-texture.png') center/cover no-repeat;
       background-color: rgba(0,0,0,0.65);
       overflow: hidden;
+      width: 100%;
     }
 
     .hero-logo {
       font-family: 'Orbitron', sans-serif;
-      font-size: 72px;
+      font-size: clamp(40px, 10vw, 72px);
       letter-spacing: 0.18em;
       font-weight: 700;
       margin-bottom: 25px;
@@ -82,8 +95,8 @@
 
     .hero-illust {
       width: 340px;
-      max-width: 90%;
-      margin: 40px auto 20px;
+      max-width: 85%;
+      margin: 30px auto 20px;
       display: block;
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
       animation: floatIllust 4s ease-in-out infinite;
@@ -95,32 +108,16 @@
     }
 
     .hero-catch {
-      font-size: 20px;
+      font-size: clamp(15px, 4vw, 20px);
       line-height: 1.9;
-      margin-bottom: 50px;
+      margin-bottom: 30px;
+      padding: 0 10px;
       opacity: 0;
       animation: catchFadeIn 3s ease forwards;
     }
 
     @keyframes catchFadeIn {
       to { opacity: 1; }
-    }
-
-    /* ===== HERO NAV（これだけ残す） ===== */
-    .hero-nav a {
-      margin: 0 25px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 18px;
-      letter-spacing: 0.1em;
-      transition: 0.3s;
-      padding-bottom: 4px;
-      border-bottom: 1px solid transparent;
-    }
-
-    .hero-nav a:hover {
-      color: #4ea3ff;
-      border-bottom: 1px solid #4ea3ff;
     }
 
     /* ===== ハンバーガーメニュー ===== */
@@ -162,6 +159,10 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
     .raiden-menu.show {
@@ -170,12 +171,15 @@
     }
 
     .menu-inner {
+      width: 100%;
       max-width: 520px;
-      margin: 80px auto;
+      margin: 0 auto;
       padding: 30px 20px;
       border: 1px solid rgba(255,255,255,0.3);
       border-radius: 8px;
       background: rgba(0,0,0,0.7) url('ink-texture.png') center/cover;
+      max-height: 85vh;
+      overflow-y: auto;
     }
 
     .menu-title {
@@ -192,14 +196,14 @@
     }
 
     .raiden-menu li {
-      margin: 10px 0;
+      margin: 12px 0;
     }
 
     .raiden-menu a {
       color: #fff;
       text-decoration: none;
       letter-spacing: 0.12em;
-      font-size: 15px;
+      font-size: 16px;
       opacity: 0.8;
       transition: 0.3s;
     }
@@ -209,17 +213,44 @@
       color: #4ea3ff;
     }
 
+    /* ===== アドミン（隠しエリア：丸い発光ホバー） ===== */
+    .raiden-admin-btn {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .raiden-admin-btn a {
+      width: 42px;
+      height: 42px;
+      display: block;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid transparent;
+      border-radius: 50%;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .raiden-admin-btn a:hover,
+    .raiden-admin-btn a:active {
+      background: rgba(0, 0, 0, 0.55);
+      border-color: #4ea3ff;
+      box-shadow: 0 0 8px #4ea3ff, 0 0 20px rgba(78, 163, 255, 0.6);
+      transform: scale(1.08);
+    }
+
     /* ===== お知らせバー ===== */
     #raiden-notice {
       position: fixed;
       top: -120px;
       left: 50%;
       transform: translateX(-50%);
-      width: 95%;
+      width: 90%;
       max-width: 520px;
-      background: rgba(0,0,0,0.75) url('ink-texture.png') center/cover;
+      background: rgba(0,0,0,0.85) url('ink-texture.png') center/cover;
       border: 1px solid rgba(255,255,255,0.5);
-      padding: 18px 0 14px;
+      padding: 18px 15px 14px;
       text-align: center;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 0.12em;
@@ -247,7 +278,7 @@
 
     #raiden-notice p {
       margin: 0;
-      font-size: 17px;
+      font-size: clamp(14px, 4vw, 17px);
     }
 
     #raiden-notice .sub {
@@ -279,21 +310,21 @@
       100% { opacity: 0.3; }
     }
 
-    /* ===== 3×3 BRAND GRID ===== */
+    /* ===== BRAND GRID（スマホ対応レスポンシブ） ===== */
     .brand-grid {
       max-width: 1200px;
-      margin: 120px auto;
+      margin: clamp(50px, 10vw, 120px) auto;
       padding: 0 20px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
+      gap: 20px;
     }
 
     .brand-card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px;
-      padding: 40px 20px;
+      padding: clamp(25px, 5vw, 40px) 15px;
       text-align: center;
       text-decoration: none;
       color: #fff;
@@ -307,36 +338,227 @@
 
     .brand-card h3 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 24px;
+      font-size: clamp(18px, 4vw, 24px);
       letter-spacing: 0.1em;
-      margin-bottom: 12px;
+      margin-top: 0;
+      margin-bottom: 8px;
     }
 
     .brand-card p {
-      font-size: 14px;
+      font-size: 13px;
       opacity: 0.8;
+      margin: 0;
     }
 
     /* ===== SHORT ABOUT ===== */
     .short-about {
-      margin: 120px auto 80px;
+      margin: clamp(50px, 8vw, 120px) auto 60px;
       max-width: 700px;
-      font-size: 16px;
+      padding: 0 20px;
+      font-size: clamp(14px, 3.8vw, 16px);
       line-height: 2;
       opacity: 0.85;
     }
 
     /* ===== FOOTER ===== */
     footer {
-      margin-top: 80px;
+      margin-top: 60px;
       padding: 40px 20px;
       border-top: 1px solid rgba(255,255,255,0.2);
       opacity: 0.85;
+      font-size: 14px;
+      word-break: break-all;
     }
 
     footer a {
       color: #4ea3ff;
       text-decoration: none;
+    }
+
+    /* ===== 隠しセキュリティパネル（モーダル） ===== */
+    #secretPanel {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .secret-box {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(10, 10, 15, 0.95);
+      border: 1px solid #4ea3ff;
+      border-radius: 10px;
+      padding: 25px 20px;
+      box-shadow: 0 0 30px rgba(78, 163, 255, 0.3);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .secret-box h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      color: #4ea3ff;
+      letter-spacing: 0.18em;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .secret-box input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(78, 163, 255, 0.4);
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      letter-spacing: 0.3em;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      outline: none;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .secret-box input[type="password"]:focus {
+      border-color: #4ea3ff;
+      box-shadow: 0 0 10px rgba(78, 163, 255, 0.5);
+    }
+
+    .secret-btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .secret-box button {
+      flex: 1;
+      padding: 12px;
+      background: #4ea3ff;
+      border: none;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: 0.3s;
+      font-size: 13px;
+    }
+
+    .secret-box button:hover {
+      background: #73b7ff;
+      box-shadow: 0 0 15px #4ea3ff;
+    }
+
+    .secret-box button.btn-qr {
+      background: transparent;
+      border: 1px solid #4ea3ff;
+      color: #4ea3ff;
+    }
+
+    .secret-box button.btn-qr:hover {
+      background: rgba(78, 163, 255, 0.2);
+    }
+
+    /* 区切り線 (OR) */
+    .sso-divider {
+      margin: 18px 0 15px;
+      display: flex;
+      align-items: center;
+      color: #888;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+    }
+    .sso-divider::before, .sso-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+    }
+    .sso-divider span {
+      padding: 0 10px;
+    }
+
+    /* Google SSO ボタン配置枠 */
+    .sso-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    /* サイト上メッセージ通知エリア */
+    #secretMessage {
+      min-height: 22px;
+      margin-top: 15px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      font-family: 'Orbitron', sans-serif;
+      transition: 0.3s;
+      word-break: break-word;
+    }
+
+    .msg-error {
+      color: #ff4e4e;
+      text-shadow: 0 0 8px rgba(255, 78, 78, 0.6);
+      animation: shake 0.3s ease;
+    }
+
+    .msg-info {
+      color: #4ea3ff;
+      text-shadow: 0 0 8px rgba(78, 163, 255, 0.6);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .secret-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #888;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .secret-close:hover {
+      color: #fff;
+    }
+
+    #reader {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 6px;
+      overflow: hidden;
+      display: none;
+    }
+
+    /* ===== タブレット・スマホ用レスポンシブメディアクエリ ===== */
+    @media (max-width: 900px) {
+      .brand-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .brand-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .secret-btn-group {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -351,6 +573,11 @@
     <span></span>
     <span></span>
     <span></span>
+  </div>
+
+  <!-- 隠しアドミン領域（文字なし、ホバーで青く丸く光る） -->
+  <div class="raiden-admin-btn">
+    <a href="#"></a>
   </div>
 
   <!-- メニュー本体 -->
@@ -386,70 +613,58 @@
   <!-- HERO全体 -->
   <div class="hero-wrap">
     <div class="hero-lightning-line"></div>
-
     <div class="hero-logo">RAIDEN</div>
-
     <img src="P_RAIDEN_BASE.PNG" class="hero-illust" alt="RAIDEN 雷神イラスト">
-
     <div class="hero-catch">
       オリジナルブランド『RAIDEN』。<br>
       雷神、風神──日本絵画の世界を纏う四季のコレクション。
     </div>
+  </div>
 
   <!-- ===== 3×3 BRAND GRID ===== -->
   <div class="brand-grid">
-
     <a href="look.html" class="brand-card">
       <h3>LOOK</h3>
       <p>作品一覧を見る</p>
     </a>
-
     <a href="gallery.html" class="brand-card">
       <h3>GALLERY</h3>
       <p>雷神アートを見る</p>
     </a>
-
     <a href="season.html" class="brand-card">
       <h3>SEASON</h3>
       <p>四季 × 雷神の世界観</p>
     </a>
-
     <a href="news.html" class="brand-card">
       <h3>NEWS</h3>
       <p>最新情報・リリース</p>
     </a>
-
     <a href="about.html" class="brand-card">
       <h3>ABOUT</h3>
       <p>ブランドの物語</p>
     </a>
-
     <a href="contact.html" class="brand-card">
       <h3>CONTACT</h3>
       <p>Instagram / メール</p>
     </a>
-
     <a href="shop.html" class="brand-card">
       <h3>SHOP</h3>
       <p>NEW OPEN</p>
     </a>
-
     <a href="comingsoon.html" class="brand-card">
       <h3>MATERIAL</h3>
       <p>COMING SOON</p>
     </a>
-
     <a href="comingsoon.html" class="brand-card">
       <h3>STORY</h3>
       <p>COMING SOON</p>
     </a>
-
   </div>
 
   <!-- SHORT ABOUT -->
   <div class="short-about">
-    RAIDEN は、雷の速度と街の温度をまとう。
-    ファッションに閃光を落とすブランド。
+    RAIDEN は、雷の速度と街の温度をまとう。<br>
+    ファッションに閃光を落とすブランド。<br>
     すべての服は、瞬間の力を形にする。
   </div>
 
@@ -459,21 +674,57 @@
     メール：<a href="mailto:raiden.info@via.tokyo.jp">raiden.info@via.tokyo.jp</a>
   </footer>
 
-  <!-- JS：お知らせ＆メニュー -->
+  <!-- 隠しセキュリティパネル（モーダル画面） -->
+  <div id="secretPanel" style="display:none;">
+    <div class="secret-box">
+      <span class="secret-close" onclick="closeSecretPanel()">&times;</span>
+      <h2>SECURITY ACCESS</h2>
+
+      <input id="accessCode" type="password" maxlength="4" placeholder="0000">
+
+      <div class="secret-btn-group">
+        <button onclick="checkCode()">VERIFY</button>
+        <button class="btn-qr" onclick="scanQR()">QR SCAN</button>
+      </div>
+
+      <!-- Google SSO エリア -->
+      <div class="sso-divider"><span>OR GOOGLE SSO</span></div>
+      <div class="sso-wrapper">
+        <div id="g_id_onload"
+             data-client_id="554787554044-vstt1i2iacn9eli8d785mrtaflbpu85v.apps.googleusercontent.com"
+             data-callback="handleAdminSso">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-theme="filled_black" data-size="large"></div>
+      </div>
+
+      <!-- サイト上に表示されるメッセージ用エリア -->
+      <div id="secretMessage"></div>
+
+      <!-- QR画像ファイル選択用（カメラ不可時のフォールバック） -->
+      <input type="file" id="qrFileInput" accept="image/*" style="display:none;" onchange="handleFileSelect(event)">
+
+      <!-- カメラ／スキャン枠 -->
+      <div id="reader"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
   <script>
-    // お知らせバー
+    const ADMIN_URL = "https://raiden-admin.ts01.workers.dev";
+    const AUTH_GAS_URL = "https://script.google.com/macros/s/AKfycbwHjeBC0ah6vesTwdJMMNq1KlAJfXr-2ir-GaIDKyCd0rHq9vNJunPEQ4SA4iWkWwkgPg/exec";
+    let html5QrcodeScanner = null;
+
+    // お知らせバー制御
     window.addEventListener('load', () => {
       const notice = document.getElementById('raiden-notice');
       const closeBtn = document.querySelector('.notice-close');
 
-      // 表示
       setTimeout(() => {
         notice.style.transition = "opacity 1s ease, top 1s ease";
         notice.style.opacity = "1";
         notice.style.top = "25px";
       }, 400);
 
-      // 非表示
       function hideNotice() {
         notice.style.transition = "opacity 1s ease, top 1s ease";
         notice.style.opacity = "0";
@@ -481,14 +732,11 @@
         notice.style.pointerEvents = "none";
       }
 
-      // 10秒後に自動で閉じる
       setTimeout(hideNotice, 10000);
-
-      // ×ボタンで閉じる
       closeBtn.addEventListener('click', hideNotice);
     });
 
-    // ハンバーガーメニュー
+    // ハンバーガーメニュー制御
     window.addEventListener('load', () => {
       const btn = document.querySelector('.raiden-menu-btn');
       const menu = document.querySelector('.raiden-menu');
@@ -502,7 +750,6 @@
         }
       });
 
-      // メニュー外クリックで閉じる
       menu.addEventListener('click', (e) => {
         if (e.target === menu) {
           btn.classList.remove('active');
@@ -510,9 +757,175 @@
         }
       });
     });
-  </script>
 
+    // 画面右上タップで裏メニュー表示（7回連続タップ）
+    let adminTapCount = 0;
+    document.querySelector(".raiden-admin-btn a").addEventListener("click", function(e){
+      e.preventDefault();
+      adminTapCount++;
+
+      if(adminTapCount >= 7){
+        document.getElementById("secretPanel").style.display = "flex";
+        showMsg("", ""); // メッセージクリア
+        adminTapCount = 0;
+      }
+    });
+
+    // JWTトークンデコード用ヘルパー
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Google SSO 認証成功時の処理（新GASで判定後に移動）
+// Google SSO 認証成功時の処理
+    async function handleAdminSso(response) {
+      const payload = parseJwt(response.credential);
+      
+      if (!payload || !payload.email) {
+        showMsg("AUTHENTICATION FAILED", "error");
+        return;
+      }
+
+      const userEmail = payload.email;
+      showMsg("VERIFYING ACCOUNT...", "info");
+
+      try {
+        // GASへメールアドレスを送信（リダイレクトを許可してCORSエラーを回避）
+        const res = await fetch(AUTH_GAS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ email: userEmail }),
+          redirect: "follow"
+        });
+
+        const result = await res.json();
+
+        if (result.allowed) {
+          showMsg(`ACCESS GRANTED (${userEmail})`, "info");
+          setTimeout(() => {
+            location.href = ADMIN_URL;
+          }, 600);
+        } else {
+          showMsg("ACCESS DENIED: UNAUTHORIZED ACCOUNT", "error");
+        }
+      } catch (err) {
+        console.error(err);
+        showMsg("SYSTEM ERROR: COULD NOT VERIFY USER", "error");
+      }
+    }
+
+    // メッセージ非表示・表示用関数（alertの代わり）
+    function showMsg(text, type = "error") {
+      const msgBox = document.getElementById("secretMessage");
+      msgBox.textContent = text;
+      msgBox.className = type === "error" ? "msg-error" : "msg-info";
+    }
+
+    // 隠しパネルを閉じる処理
+    function closeSecretPanel(){
+      document.getElementById("secretPanel").style.display = "none";
+      showMsg("");
+      if(html5QrcodeScanner) {
+        html5QrcodeScanner.stop().catch(() => {});
+        document.getElementById("reader").style.display = "none";
+      }
+    }
+
+    // 4桁暗号の照合処理
+    function checkCode(){
+      const code = document.getElementById("accessCode").value.trim();
+      if(code === "3021"){
+        showMsg("ACCESS GRANTED", "info");
+        setTimeout(() => {
+          location.href = ADMIN_URL;
+        }, 500);
+      } else {
+        showMsg("ACCESS DENIED: INVALID CODE", "error");
+      }
+    }
+
+    // Enterキーでも送信可能
+    document.getElementById("accessCode").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        checkCode();
+      }
+    });
+
+    // QRコード処理（カメラ起動 ＆ ダメならファイル選択へ切り替え）
+    function scanQR(){
+      showMsg("STARTING CAMERA...", "info");
+      const readerDiv = document.getElementById("reader");
+      readerDiv.style.display = "block";
+
+      if(!html5QrcodeScanner) {
+        html5QrcodeScanner.stop().catch(() => {}).then(() => {
+          startScanner();
+        }).catch(() => {
+          startScanner();
+        });
+      } else {
+        startScanner();
+      }
+    }
+
+    function startScanner() {
+      html5QrcodeScanner = new Html5Qrcode("reader");
+      html5QrcodeScanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 200, height: 200 } },
+        (decodedText) => {
+          processQRResult(decodedText);
+        },
+        (errorMessage) => {}
+      ).catch(err => {
+        showMsg("CAMERA UNAVAILABLE. SELECT AN IMAGE.", "info");
+        document.getElementById("qrFileInput").click();
+      });
+    }
+
+    // 画像ファイルからQRコードを読み取る処理
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      showMsg("READING IMAGE...", "info");
+
+      if (!html5QrcodeScanner) {
+        html5QrcodeScanner = new Html5Qrcode("reader");
+      }
+
+      html5QrcodeScanner.scanFile(file, true)
+        .then(decodedText => {
+          processQRResult(decodedText);
+        })
+        .catch(err => {
+          showMsg("FAILED TO READ QR CODE", "error");
+        });
+    }
+
+    // QR読み取り結果の検証・移動処理
+    function processQRResult(text) {
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.stop().catch(() => {});
+      }
+      if (text.trim() === "3021" || text.includes("RAIDEN_PORTAL") || text.includes("raiden-admin")) {
+        showMsg("ACCESS GRANTED", "info");
+        setTimeout(() => {
+          location.href = ADMIN_URL;
+        }, 500);
+      } else {
+        showMsg("INVALID QR CODE", "error");
+      }
+    }
+  </script>
 </body>
 </html>
-
-

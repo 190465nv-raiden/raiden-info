@@ -440,6 +440,10 @@ submitBtn.addEventListener("click", () => {
     return;
   }
 
+  // ▼ 連打防止（ボタンを無効化してテキスト変更）
+  submitBtn.disabled = true;
+  submitBtn.textContent = "送信中...";
+
   // ▼ 送信データ（GASに送るJSON）
   const payload = {
     item: itemVal,
@@ -453,22 +457,21 @@ submitBtn.addEventListener("click", () => {
     note: document.getElementById("note").value.trim()
   };
 
-  // ▼ GAS送信枠（URLは後で入れるだけ）
+  // ▼ GAS送信（mode: "no-cors" を追加してCORSエラーを回避）
   fetch("https://script.google.com/macros/s/AKfycbwkwCQicPz2CStYuulc4a9H3C267QtWh8IvoDxuPZqDreX2sxzsWEtAbwPxJQc9DQhoAA/exec", {
     method: "POST",
+    mode: "no-cors",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(payload)
   })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "success") {
-        window.location.href = "thanks.html";
-      } else {
-        showModal("送信エラーが発生しました。");
-      }
+    .then(() => {
+      // 送信完了したらサンクスページへ遷移
+      window.location.href = "thanks.html";
     })
     .catch(err => {
       showModal("通信エラーが発生しました。");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "送信する";
     });
 
 });
