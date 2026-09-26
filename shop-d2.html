@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>RAIDEN – 2nd T-SHIRT</title>
+  <title>RAIDEN – D2</title>
   <link rel="icon" type="image/png" href="favicon.png">
 
   <!-- フォント -->
@@ -37,18 +37,36 @@
       z-index: -1;
     }
 
-    /* HERO */
+    /* HERO（ロゴを上ギリギリ & 中央揃え） */
     .hero {
-      padding: 120px 20px 60px;
+      padding: 20px 20px 110px;
       background: url('ink-texture.png') center/cover no-repeat;
       background-color: rgba(0,0,0,0.55);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* ← ロゴも画像も中央揃え */
+    }
+
+    /* 中央上ロゴ（100px & 上ギリギリ） */
+    .hero-logo {
+      width: 100px;
+      margin: 0 auto 30px;
+      opacity: 0;
+      animation: fadeInLogo 1.8s ease forwards;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.25));
+      cursor: pointer;
+    }
+
+    @keyframes fadeInLogo {
+      to { opacity: 1; }
     }
 
     .title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 48px;
+      font-size: 46px;
       letter-spacing: 0.18em;
-      margin-bottom: 20px;
+      margin-bottom: 45px;
       opacity: 0;
       animation: fadeIn 2s ease forwards;
     }
@@ -57,11 +75,19 @@
       to { opacity: 1; }
     }
 
-    /* 商品画像 */
+    /* 商品画像を中央に強制配置するラッパー */
+    .item-img-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center; /* ← 絶対中央 */
+      align-items: center;
+    }
+
+    /* 商品画像（上下にふわっと動く） */
     .item-img {
-      width: 360px;
+      width: 380px;
       max-width: 90%;
-      margin: 40px auto 20px;
+      margin: 70px auto 50px;
       display: block;
       filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
       animation: float 4s ease-in-out infinite;
@@ -69,46 +95,55 @@
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-10px); }
     }
 
     /* 説明文 */
     .desc {
-      max-width: 650px;
-      margin: 40px auto;
-      line-height: 2.1;
-      font-size: 17px;
+      max-width: 700px;
+      margin: 60px auto 30px;
+      line-height: 2.2;
+      font-size: 18px;
       opacity: 0.9;
     }
 
-    /* ボタン */
+    .price {
+      margin-top: 25px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+    }
+
+    /* ボタン（青く光る） */
     .btn {
       display: inline-block;
-      margin-top: 30px;
-      padding: 14px 40px;
+      margin-top: 45px;
+      padding: 16px 45px;
       border: 1px solid #4ea3ff;
       color: #4ea3ff;
       text-decoration: none;
       letter-spacing: 0.12em;
       transition: 0.3s;
       border-radius: 4px;
+      font-family: 'Orbitron', sans-serif;
     }
 
     .btn:hover {
       background: #4ea3ff;
       color: #000;
-      box-shadow: 0 0 15px #4ea3ff;
+      box-shadow: 0 0 20px #4ea3ff;
     }
 
     /* 戻るリンク */
     .back {
-      margin-top: 60px;
+      margin-top: 90px;
       display: inline-block;
       color: #fff;
       opacity: 0.7;
       text-decoration: none;
       letter-spacing: 0.1em;
       transition: 0.3s;
+      font-family: 'Orbitron', sans-serif;
     }
 
     .back:hover {
@@ -123,19 +158,27 @@
   <div class="lightning-bg"></div>
 
   <div class="hero">
-    <div class="title">PROTO T-SHIRT</div>
 
-    <!-- ここにTシャツの画像を置く -->
-    <img src="1st_tshirt.png" class="item-img" alt="1st T-SHIRT">
+    <!-- 中央上ロゴ（クリックでトップへ） -->
+    <a href="index.html">
+      <img src="ab12-logo.png" class="hero-logo" alt="RAIDEN Logo">
+    </a>
 
-  <div class="desc">
-  RAIDENを設立してから、初めての一着。<br>
-  ブランドの始まりを刻む、象徴的なTシャツ。<br>
-  この一着は非売品として制作され、RAIDENの原点を示す存在となる。
-</div>  
+    <div class="title">D2</div>
+
+    <!-- 商品画像（中央揃え専用ラッパー） -->
+    <div class="item-img-wrap">
+      <img src="shop-tshirt-d2.png" class="item-img" alt="D2">
+    </div>
+
+
+
+    <div class="price">¥1,600</div>
+
+    <a href="shop-form.html" class="btn">購入ページへ</a>
 
     <br><br>
-    <a href="index.html" class="back">← BACK TO HOME</a>
+    <a href="shop.html" class="back">← BACK TO SHOP</a>
   </div>
 
 </body>
